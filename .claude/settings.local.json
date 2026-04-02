@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npx:*)",
+      "Bash(cp -r /tmp/ce2-forecast/* /Users/mschultz/dstasks/codecks/)",
+      "Bash(cp /tmp/ce2-forecast/.gitignore /Users/mschultz/dstasks/codecks/)",
+      "Bash(npm install:*)",
+      "Bash(xargs kill:*)",
+      "Bash(curl -s http://localhost:5180)",
+      "Bash(curl -s http://localhost:5180/src/components/ForecastTable.jsx)",
+      "WebFetch(domain:stories.stage.codecks.dev)",
+      "Bash(git init:*)",
+      "Bash(git branch:*)"
+    ]
+  }
+}

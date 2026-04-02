@@ -475,7 +475,7 @@ export default function ForecastTable({ activePriorities, selectedMilestone, buf
       )}
 
       <div className={`flex-1 min-w-0 min-h-0 overflow-hidden border border-grey-500 ${drawerVisible ? 'rounded-r-[8px]' : 'rounded-[8px]'}`}>
-        <div ref={scrollRef} className="overflow-auto h-full bg-grey-750 forecast-scroll" style={{ position: 'relative' }}>
+        <div ref={scrollRef} className="overflow-auto max-h-full bg-grey-750 forecast-scroll" style={{ position: 'relative' }}>
           <table className="text-sm border-separate border-spacing-0" style={{ minWidth: '100%' }}>
           <thead className="sticky top-0 z-30">
             {/* Group headers */}
