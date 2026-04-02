@@ -1,0 +1,370 @@
+@import "tailwindcss";
+
+/*
+ * ── Ebony Font Family ──
+ * Codecks uses "cdx-ebony" with Light (400) and Semibold (700) weights.
+ * Heavy and Bold variants included for completeness.
+ */
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-Light.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-LightItalic.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-Semibold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-SemiboldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-Bold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-BoldItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-Heavy.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: cdx-ebony;
+  src: url('./assets/fonts/Ebony-HeavyItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/*
+ * CDX Color Tokens — extracted from core/color.json
+ * Mapped to the UI seen in the CE2 Forecast screenshot.
+ */
+@theme {
+  /* ── Grey (backgrounds, borders, text) ── */
+  --color-grey-0: #ffffff;
+  --color-grey-25: #f9f9fa;
+  --color-grey-50: #edeef2;
+  --color-grey-100: #e0e2eb;
+  --color-grey-150: #cdd1e2;
+  --color-grey-200: #bbc0d6;
+  --color-grey-250: #a3aac6;
+  --color-grey-300: #9098b6;
+  --color-grey-350: #7d86a5;
+  --color-grey-400: #6c7490;
+  --color-grey-450: #606781;
+  --color-grey-500: #575e75;
+  --color-grey-550: #4c5267;
+  --color-grey-600: #40465a;
+  --color-grey-650: #373d50;
+  --color-grey-700: #313649;
+  --color-grey-750: #2a3042;
+  --color-grey-800: #24293b;
+  --color-grey-850: #1e2333;
+  --color-grey-900: #181d2c;
+  --color-grey-950: #131725;
+  --color-grey-975: #0d101c;
+  --color-grey-1000: #000000;
+
+  /* ── Purple (primary accent / brand, Tasks group) ── */
+  --color-purple-50: #f1ebfc;
+  --color-purple-100: #e7dff7;
+  --color-purple-200: #cab9e7;
+  --color-purple-300: #a38acb;
+  --color-purple-400: #8362b1;
+  --color-purple-450: #7c5aab;
+  --color-purple-500: #704d9e;
+  --color-purple-600: #563978;
+  --color-purple-700: #442b5d;
+  --color-purple-800: #381d4e;
+  --color-purple-900: #2c113d;
+  --color-purple-950: #250b35;
+
+  /* ── Cherry Red (negative / decrease indicators) ── */
+  --color-cherry-50: #fae3e1;
+  --color-cherry-100: #f9aba8;
+  --color-cherry-200: #f87879;
+  --color-cherry-300: #f6505c;
+  --color-cherry-400: #e52844;
+  --color-cherry-500: #c32038;
+  --color-cherry-600: #a3192d;
+  --color-cherry-700: #821221;
+  --color-cherry-800: #630e18;
+  --color-cherry-900: #450b0e;
+
+  /* ── Salad Green (positive / increase indicators) ── */
+  --color-salad-50: #c1ffd1;
+  --color-salad-100: #57f190;
+  --color-salad-200: #01ce69;
+  --color-salad-300: #01b759;
+  --color-salad-400: #00a049;
+  --color-salad-500: #01883b;
+  --color-salad-600: #01702c;
+  --color-salad-700: #00591d;
+
+  /* ── Emerald Green ── */
+  --color-emerald-50: #dbf7eb;
+  --color-emerald-100: #66f0c7;
+  --color-emerald-200: #3bd1a8;
+  --color-emerald-300: #3dbb98;
+  --color-emerald-400: #34a485;
+  --color-emerald-500: #2a8b70;
+  --color-emerald-600: #1e735c;
+  --color-emerald-700: #115a46;
+  --color-emerald-800: #084434;
+
+  /* ── Ocean Green (QA column group) ── */
+  --color-ocean-50: #d1f5f9;
+  --color-ocean-100: #94dfe7;
+  --color-ocean-200: #54aeb7;
+  --color-ocean-300: #3b969d;
+  --color-ocean-400: #2f8288;
+  --color-ocean-500: #257076;
+  --color-ocean-600: #1f5f64;
+  --color-ocean-700: #1d4d50;
+  --color-ocean-800: #173b3e;
+  --color-ocean-900: #122c2e;
+  --color-ocean-950: #091d1e;
+
+  /* ── Caramel Yellow (Sound column group) ── */
+  --color-caramel-50: #fff1cd;
+  --color-caramel-100: #f6d076;
+  --color-caramel-200: #d8a63d;
+  --color-caramel-300: #c4912b;
+  --color-caramel-400: #af7c21;
+  --color-caramel-500: #97671e;
+  --color-caramel-600: #7e531b;
+  --color-caramel-700: #65421b;
+  --color-caramel-800: #4b3118;
+  --color-caramel-900: #332213;
+
+  /* ── Tangerine Orange (Art column group) ── */
+  --color-tangerine-50: #f4e6cc;
+  --color-tangerine-100: #f1c58e;
+  --color-tangerine-200: #ed994f;
+  --color-tangerine-300: #e78033;
+  --color-tangerine-400: #db661c;
+  --color-tangerine-500: #cb4e09;
+  --color-tangerine-600: #b53904;
+  --color-tangerine-700: #9b2802;
+  --color-tangerine-800: #7c1c00;
+  --color-tangerine-900: #5c1700;
+
+  /* ── Cornflower Blue (Archive column group) ── */
+  --color-cornflower-50: #d9e9f6;
+  --color-cornflower-100: #9fc7ef;
+  --color-cornflower-200: #69a2e7;
+  --color-cornflower-300: #508fdf;
+  --color-cornflower-400: #487dcd;
+  --color-cornflower-500: #3e69b6;
+  --color-cornflower-600: #34589d;
+  --color-cornflower-700: #2a4782;
+  --color-cornflower-800: #1f3765;
+  --color-cornflower-900: #172848;
+  --color-cornflower-950: #0f1a2e;
+
+  /* ── Damp Blue ── */
+  --color-damp-50: #dde9ed;
+  --color-damp-100: #acc7d6;
+  --color-damp-200: #78a4c2;
+  --color-damp-300: #6293b8;
+  --color-damp-400: #4f82ac;
+  --color-damp-500: #3a6f9f;
+  --color-damp-600: #2a618f;
+  --color-damp-700: #14507a;
+  --color-damp-800: #0c4064;
+  --color-damp-900: #07314e;
+
+  /* ── Lavender Purple ── */
+  --color-lavender-50: #fbe8f8;
+  --color-lavender-100: #f5c2ee;
+  --color-lavender-200: #d685cd;
+  --color-lavender-300: #c467ba;
+  --color-lavender-400: #b54faa;
+  --color-lavender-500: #a43a99;
+  --color-lavender-600: #8d2383;
+  --color-lavender-700: #7a1a71;
+
+  /* ── Purple Dark (alt purple) ── */
+  --color-purple-dark-50: #f2ecf7;
+  --color-purple-dark-100: #e8dfef;
+  --color-purple-dark-200: #cabcd5;
+  --color-purple-dark-300: #a190ae;
+  --color-purple-dark-400: #7d6c89;
+  --color-purple-dark-500: #695876;
+  --color-purple-dark-600: #504159;
+  --color-purple-dark-700: #3f3245;
+  --color-purple-dark-800: #33243a;
+  --color-purple-dark-900: #28172e;
+  --color-purple-dark-950: #221127;
+  --color-purple-dark-975: #1b0b1e;
+}
+
+/* ── Base reset ── */
+html, body, #root {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-grey-850);
+  color: var(--color-grey-50);
+  font-family: cdx-ebony, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 21px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Custom scrollbar for the forecast table ── */
+.forecast-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-grey-650) var(--color-grey-800);
+}
+.forecast-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.forecast-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.forecast-scroll::-webkit-scrollbar-track:horizontal {
+  background: var(--color-grey-800);
+  border-radius: 4px;
+  /* margin insets the track from the edges to stay inside the border-radius */
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.forecast-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-grey-700);
+  border-radius: 4px;
+}
+.forecast-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-grey-600);
+}
+.forecast-scroll::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ── Sticky thead shadow (visible on scroll) ── */
+.forecast-scroll thead {
+  box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Sticky column shadows ── */
+/* Note: no position: relative needed — sticky already acts as containing block for ::before/::after */
+.sticky-col-shadow::after,
+.sticky-total-shadow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  pointer-events: none;
+  z-index: 1;
+}
+.sticky-col-shadow::after {
+  right: -8px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.12), transparent);
+}
+.sticky-total-shadow::before {
+  left: -8px;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.12), transparent);
+}
+
+/* ── Buffer slider ── */
+.buffer-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  outline: none;
+  /* background set via inline style for filled track */
+}
+.buffer-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-ocean-400);
+  border: 2px solid var(--color-ocean-300);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  transition: background 0.15s, transform 0.15s;
+}
+.buffer-slider::-webkit-slider-thumb:hover {
+  background: var(--color-ocean-300);
+  transform: scale(1.15);
+}
+.buffer-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-ocean-400);
+  border: 2px solid var(--color-ocean-300);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.buffer-slider::-moz-range-track {
+  height: 4px;
+  background: var(--color-grey-650);
+  border-radius: 2px;
+}
+
+/* ── Drawer transitions ── */
+.drawer-wrapper {
+  transition: width 0.25s ease-out;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.drawer-panel {
+  transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+  transform: translateX(100%);
+  opacity: 0;
+}
+.drawer-panel.drawer-open {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* ── Active column highlight ── */
+.active-col {
+  background: rgba(98, 147, 184, 0.06);
+  box-shadow: inset 1px 0 0 var(--color-damp-300), inset -1px 0 0 var(--color-damp-300);
+  transition: background 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.active-col.active-col-top {
+  box-shadow: inset 1px 0 0 var(--color-damp-300), inset -1px 0 0 var(--color-damp-300), inset 0 1px 0 var(--color-damp-300);
+  border-radius: 6px 6px 0 0;
+}
+.active-col.active-col-bottom {
+  box-shadow: inset 1px 0 0 var(--color-damp-300), inset -1px 0 0 var(--color-damp-300), inset 0 -1px 0 var(--color-damp-300);
+  border-radius: 0 0 6px 6px;
+}
