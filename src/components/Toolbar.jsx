@@ -7,6 +7,10 @@ export default function Toolbar({
   onAddScenario,
   onRenameScenario,
   onDeleteScenario,
+  onSaveScenario,
+  onResetScenario,
+  onResetToDefaults,
+  isDirty,
   selectedMilestone,
   onSelectMilestone,
   milestones,
@@ -201,86 +205,117 @@ export default function Toolbar({
             )}
           </div>
 
-          {/* Edit button */}
-          <div className="relative" ref={editRef}>
-            <button
-              onClick={editOpen ? () => setEditOpen(false) : openEdit}
-              disabled={!activeScenario}
-              className={`shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded border transition-all ${
-                activeScenario
-                  ? 'border-purple-400 text-purple-100 cursor-pointer hover:border-purple-300 hover:text-purple-50'
-                  : 'border-grey-500 text-grey-500 cursor-default'
-              }`}
-            >
-              <svg
-                className="w-4 h-4 transition-transform duration-200"
-                style={{ transform: editOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
+          {activeScenario && isDirty ? (
+            <>
+              {/* Save button */}
+              <button
+                onClick={onSaveScenario}
+                className="shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded border border-emerald-500 bg-emerald-600 text-white cursor-pointer hover:bg-emerald-500 transition-all"
               >
-                {editOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
-                )}
-              </svg>
-            </button>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              </button>
+              {/* Reset button */}
+              <button
+                onClick={onResetScenario}
+                className="shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded border border-purple-400 text-purple-100 cursor-pointer hover:border-purple-300 hover:text-purple-50 transition-all"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+              </button>
+            </>
+          ) : (
+            <>
+              {/* Edit button */}
+              <div className="relative" ref={editRef}>
+                <button
+                  onClick={editOpen ? () => setEditOpen(false) : openEdit}
+                  disabled={!activeScenario}
+                  className={`shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded border transition-all ${
+                    activeScenario
+                      ? 'border-purple-400 text-purple-100 cursor-pointer hover:border-purple-300 hover:text-purple-50'
+                      : 'border-grey-500 text-grey-500 cursor-default'
+                  }`}
+                >
+                  <svg
+                    className="w-4 h-4 transition-transform duration-200"
+                    style={{ transform: editOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    {editOpen ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
+                    )}
+                  </svg>
+                </button>
 
-            {editOpen && (
-              <div className="absolute top-full right-0 mt-1 w-[240px] bg-grey-850 border border-grey-600 rounded-lg shadow-xl z-50 overflow-hidden">
-                <div className="p-3 flex flex-col gap-1">
-                  <label className="text-[10px] uppercase tracking-wider text-grey-300 px-0.5 mb-[-2px]">Edit Scenario</label>
-                  <input
-                    autoFocus
-                    value={editName}
-                    onChange={(e) => setEditName(e.target.value)}
-                    onKeyDown={(e) => { if (e.key === 'Enter') handleEditSave(); if (e.key === 'Escape') setEditOpen(false) }}
-                    placeholder="Scenario name..."
-                    className="w-full h-[32px] px-2 border border-purple-400 rounded text-sm font-bold text-purple-100 placeholder:text-grey-350 placeholder:font-normal outline-none focus:border-purple-300 bg-transparent"
-                  />
-                  <div className="flex items-center gap-1.5 mt-1">
-                    <button
-                      onClick={handleEditSave}
-                      disabled={!editName.trim()}
-                      className="flex-1 h-[32px] rounded text-sm font-bold text-white bg-purple-400 cursor-pointer hover:bg-purple-300 transition-colors disabled:opacity-40 disabled:cursor-default"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={handleDelete}
-                      className="shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded text-cherry-300 border border-cherry-400/40 cursor-pointer hover:bg-cherry-400/10 transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                      </svg>
-                    </button>
+                {editOpen && (
+                  <div className="absolute top-full right-0 mt-1 w-[240px] bg-grey-850 border border-grey-600 rounded-lg shadow-xl z-50 overflow-hidden">
+                    <div className="p-3 flex flex-col gap-1">
+                      <label className="text-[10px] uppercase tracking-wider text-grey-300 px-0.5 mb-[-2px]">Edit Scenario</label>
+                      <input
+                        autoFocus
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleEditSave(); if (e.key === 'Escape') setEditOpen(false) }}
+                        placeholder="Scenario name..."
+                        className="w-full h-[32px] px-2 border border-purple-400 rounded text-sm font-bold text-purple-100 placeholder:text-grey-350 placeholder:font-normal outline-none focus:border-purple-300 bg-transparent"
+                      />
+                      <div className="flex items-center justify-between mt-1">
+                        <button
+                          onClick={handleDelete}
+                          className="shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded text-cherry-300 border border-cherry-400/40 cursor-pointer hover:bg-cherry-400/10 transition-colors"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                          </svg>
+                        </button>
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => { onResetToDefaults(); setEditOpen(false) }}
+                            className="shrink-0 h-[32px] px-3 rounded text-sm text-grey-100 border border-grey-600 cursor-pointer hover:border-grey-500 hover:text-grey-0 transition-colors"
+                          >
+                            Reset values
+                          </button>
+                          <button
+                            onClick={handleEditSave}
+                            disabled={!editName.trim()}
+                            className="shrink-0 h-[32px] px-3 rounded text-sm font-bold text-white bg-purple-400 cursor-pointer hover:bg-purple-300 transition-colors disabled:opacity-40 disabled:cursor-default"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Add button */}
-          <div className="relative" ref={addRef}>
-            <button
-              onClick={openAdd}
-              className="shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded bg-purple-400 cursor-pointer hover:bg-purple-300 transition-all"
-            >
-              <svg
-                className="w-4 h-4 text-white transition-transform duration-200"
-                style={{ transform: addOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-            </button>
+              {/* Add button */}
+              <div className="relative" ref={addRef}>
+                <button
+                  onClick={openAdd}
+                  className="shrink-0 w-[32px] h-[32px] flex items-center justify-center rounded bg-purple-400 cursor-pointer hover:bg-purple-300 transition-all"
+                >
+                  <svg
+                    className="w-4 h-4 text-white transition-transform duration-200"
+                    style={{ transform: addOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </button>
 
-            {addOpen && (
+                {addOpen && (
               <div className="absolute top-full right-0 mt-1 w-[240px] bg-grey-850 border border-grey-600 rounded-lg shadow-xl z-50 overflow-hidden">
                 <div className="p-3 flex flex-col gap-1">
                   <label className="text-[10px] uppercase tracking-wider text-grey-300 px-0.5 mb-[-2px]">New Scenario</label>
@@ -303,6 +338,8 @@ export default function Toolbar({
               </div>
             )}
           </div>
+            </>
+          )}
         </div>
       </div>
 

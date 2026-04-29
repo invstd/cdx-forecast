@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback, Fragment } from 'react'
+import { useState, useMemo, useRef, useCallback, Fragment, forwardRef, useImperativeHandle } from 'react'
 import { createPortal } from 'react-dom'
 import {
   columnGroups,
@@ -239,7 +239,17 @@ function CardRow({ card, visibleColumns, disabled, onToggle, journeyActive = tru
 
 // ─── Main table ───────────────────────────────────────────────────────────────
 
-export default function ForecastTable({ activePriorities, selectedMilestone, bufferPercent, onBufferChange }) {
+function buildDefaultMemberMonths() {
+  const init = {}
+  for (const [deckName, deck] of Object.entries(deckCapacityMap)) {
+    for (const member of deck.members) {
+      init[`${deckName}::${member.name}`] = { ...member.months }
+    }
+  }
+  return init
+}
+
+const ForecastTable = forwardRef(function ForecastTable({ activePriorities, selectedMilestone, bufferPercent, onBufferChange, onChange }, ref) {
   const [expandedScopes, setExpandedScopes] = useState(new Set())
   const [disabledCards, setDisabledCards] = useState(new Set())
   const [journeyOffCards, setJourneyOffCards] = useState(new Set()) // cards where journey is OFF (editable)
@@ -254,10 +264,12 @@ export default function ForecastTable({ activePriorities, selectedMilestone, buf
       next.has(cardId) ? next.delete(cardId) : next.add(cardId)
       return next
     })
+    onChange?.()
   }
 
   const setMultiplier = (cardId, value) => {
     setCardMultipliers((prev) => ({ ...prev, [cardId]: value }))
+    onChange?.()
   }
 
   const updateCardValue = (cardId, colName, value) => {
@@ -265,9 +277,30 @@ export default function ForecastTable({ activePriorities, selectedMilestone, buf
       ...prev,
       [cardId]: { ...(prev[cardId] || {}), [colName]: value },
     }))
+    onChange?.()
   }
   const [drawerVisible, setDrawerVisible] = useState(false) // controls animation
   const [drawerContent, setDrawerContent] = useState(null) // keeps content during close animation
+
+  useImperativeHandle(ref, () => ({
+    getSnapshot() {
+      return {
+        cardValueOverrides,
+        cardMultipliers,
+        disabledCards: [...disabledCards],
+        journeyOffCards: [...journeyOffCards],
+        memberMonthOverrides,
+      }
+    },
+    loadSnapshot(snap) {
+      setCardValueOverrides(snap?.cardValueOverrides ?? {})
+      setCardMultipliers(snap?.cardMultipliers ?? {})
+      setDisabledCards(new Set(snap?.disabledCards ?? []))
+      setJourneyOffCards(new Set(snap?.journeyOffCards ?? []))
+      setMemberMonthOverrides(snap?.memberMonthOverrides ?? buildDefaultMemberMonths())
+      setExpandedScopes(new Set())
+    },
+  }))
 
   const handleOpenDrawer = (name) => {
     if (openDrawer === name) {
@@ -299,15 +332,7 @@ export default function ForecastTable({ activePriorities, selectedMilestone, buf
   }
 
   // Lifted month state: { "deckName::memberName": { "2026-01": N, ... } }
-  const [memberMonthOverrides, setMemberMonthOverrides] = useState(() => {
-    const init = {}
-    for (const [deckName, deck] of Object.entries(deckCapacityMap)) {
-      for (const member of deck.members) {
-        init[`${deckName}::${member.name}`] = { ...member.months }
-      }
-    }
-    return init
-  })
+  const [memberMonthOverrides, setMemberMonthOverrides] = useState(buildDefaultMemberMonths)
 
   const updateMemberMonth = (deckName, memberName, month, value) => {
     const key = `${deckName}::${memberName}`
@@ -315,6 +340,7 @@ export default function ForecastTable({ activePriorities, selectedMilestone, buf
       ...prev,
       [key]: { ...prev[key], [month]: value },
     }))
+    onChange?.()
   }
 
   // Compute dynamic capacity per deck from current month overrides
@@ -357,6 +383,7 @@ export default function ForecastTable({ activePriorities, selectedMilestone, buf
       next.has(cardId) ? next.delete(cardId) : next.add(cardId)
       return next
     })
+    onChange?.()
   }
 
   const toggleScope = (name) => {
@@ -706,4 +733,6 @@ export default function ForecastTable({ activePriorities, selectedMilestone, buf
       </div>
     </div>
   )
-}
+})
+
+export default ForecastTable
